@@ -35,13 +35,7 @@ local function reduceRocketDamage( ent, dmginfo )
 
     local dmgForce = dmginfo:GetDamageForce()
 
-    local newForce
-    local newForceMult = hook.Run( "EasyRocketJumps_ForceMult", ent )
-    if newForceMult then
-        newForce = dmgForce * newForceMult
-    else
-        newForce = dmgForce * forceMult
-    end
+    local newForce = dmgForce * forceMult
 
     dmginfo:SetDamageForce( newForce )
 
@@ -49,6 +43,11 @@ local function reduceRocketDamage( ent, dmginfo )
         ent:SetVelocity( newForce / 35 )
     else
         ent:SetVelocity( newForce / 70 )
+    end
+
+    local newScaleDamage = hook.Run( "EasyRocketJumps_ScaleDamage", ent, dmginfo )
+    if newScaleDamage then
+        scaleDamage = newScaleDamage
     end
 
     dmginfo:ScaleDamage( scaleDamage )
